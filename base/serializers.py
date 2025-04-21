@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from base.models import Student, Course
+from base.models import Student, Course, Session, Attendance
 from account.models import Account
 
 
@@ -20,4 +20,24 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
+        fields = "__all__"
+
+
+class SessionSerializer(serializers.ModelSerializer):
+    lecturer = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all(), default=serializers.CurrentUserDefault()
+    )
+    session_course = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Session
+        fields = "__all__"
+
+
+class AttendanceSerializer(serializers.ModelSerializer):
+    get_program = serializers.ReadOnlyField()
+    get_student = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Attendance
         fields = "__all__"
