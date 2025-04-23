@@ -47,13 +47,19 @@ class Session(models.Model):
     def session_course(self):
         return self.course.course_name
 
+    class Meta:
+        ordering = ["-created"]
+
 
 class Attendance(models.Model):
-    session = models.ForeignKey(Session, on_delete=models.PROTECT)
-    student = models.ForeignKey(Student, on_delete=models.PROTECT)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     def get_student(self):
         return self.student.full_name
 
     def get_program(self):
         return self.session.program
+
+    class Meta:
+        ordering = ["-id"]
