@@ -7,6 +7,8 @@ from base.serializers import (
     AttendanceSerializer,
 )
 from base.models import Student, Course, Session, Attendance
+from account.models import Account
+from account.serializers import StudentAccountSerializer
 
 
 # Create your views here.
@@ -44,11 +46,10 @@ class CreateStudentView(generics.CreateAPIView):
 class RetrieveStudentView(generics.ListAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = StudentSerializer
+    serializer_class = StudentAccountSerializer
 
     def get_queryset(self):
-        lecturer = self.request.user
-        return Student.objects.filter(lecturer=lecturer)
+        return Account.objects.filter(user_type="student")
 
 
 class DeleteStudentView(generics.DestroyAPIView):
@@ -73,6 +74,23 @@ class RetrieveSessionView(generics.ListAPIView):
     def get_queryset(self):
         lecturer = self.request.user
         return Session.objects.filter(lecturer=lecturer)
+
+
+class RetrieveStudentSessionView(generics.ListAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SessionSerializer
+
+    def get_queryset(self):
+        program = self.request.user.program
+        return Session.objects.filter(program=program, status=True)
+
+
+class UpdateSessionView(generics.UpdateAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SessionSerializer
+    queryset = Session.objects.all()
 
 
 class DeleteSessionView(generics.DestroyAPIView):

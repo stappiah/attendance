@@ -6,12 +6,28 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 
+USER_TYPES = [
+    ("lecturer", "Lecturer"),
+    ("student", "Student"),
+]
+
+PROGRAMS = [
+    ("Information Technology", "Information Technology"),
+    ("Purchasing and Supply", "Purchasing and Supply"),
+    ("Accountancy", "Accountancy"),
+    ("Computer Network Management", "Computer Network Management"),
+    ("Computer Science", "Computer Science"),
+    ("Automotive Engineering", "Automotive Engineering"),
+    ("Building Technology", "Building Technology"),
+    ("Civil Engineering", "Civil Engineering"),
+]
+
 
 class AccountManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, user_type, password=None, **extra_fields):
         if not email:
             raise ValueError("Email address is required")
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=email, user_type=user_type, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -26,13 +42,16 @@ class AccountManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self.create_user(email, password, **extra_fields)
+        return self.create_user(email, "lecturer", password, **extra_fields)
 
 
 class Account(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True)
+    user_type = models.CharField(max_length=8, choices=USER_TYPES, default="student")
+    program = models.CharField(max_length=27, choices=PROGRAMS, blank=True, null=True)
+    index_number = models.CharField(max_length=20, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

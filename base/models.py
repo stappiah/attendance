@@ -43,6 +43,7 @@ class Session(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     level = models.CharField(max_length=10)
     program_type = models.CharField(max_length=30, choices=programType)
+    status = models.BooleanField(default=True)
 
     def session_course(self):
         return self.course.course_name
@@ -60,6 +61,9 @@ class Attendance(models.Model):
 
     def get_program(self):
         return self.session.program
+
+    def get_index_number(self):
+        return self.student.index_number
 
     class Meta:
         ordering = ["-id"]

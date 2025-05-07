@@ -37,6 +37,7 @@ class SessionSerializer(serializers.ModelSerializer):
 class AttendanceSerializer(serializers.ModelSerializer):
     get_program = serializers.ReadOnlyField()
     get_student = serializers.ReadOnlyField()
+    get_index_number = serializers.ReadOnlyField()
 
     class Meta:
         model = Attendance

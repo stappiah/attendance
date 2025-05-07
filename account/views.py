@@ -35,6 +35,9 @@ class UserRegistrationView(generics.CreateAPIView):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "email": user.email,
+                    "user_type": user.user_type,
+                    "program": user.program,
+                    "index_number": user.index_number,
                 },
                 "token": token.key,
             }
@@ -59,6 +62,9 @@ class CustomAuthModel(ObtainAuthToken):
                 "first_name": user.first_name,
                 "last_name": user.last_name,
                 "email": user.email,
+                "user_type": user.user_type,
+                "index_number": user.index_number,
+                "program": user.program,
                 "token": token.key,
                 "user_id": user.pk,
             }
