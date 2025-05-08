@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from rest_framework import generics, authentication, permissions
 from base.serializers import (
-    StudentSerializer,
     CourseSerializer,
     SessionSerializer,
     AttendanceSerializer,
 )
-from base.models import Student, Course, Session, Attendance
+from base.models import Course, Session, Attendance
 from account.models import Account
 from account.serializers import StudentAccountSerializer
 
@@ -34,29 +33,6 @@ class DeleteCourseView(generics.DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-
-
-class CreateStudentView(generics.CreateAPIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = StudentSerializer
-    queryset = Student.objects.all()
-
-
-class RetrieveStudentView(generics.ListAPIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = StudentAccountSerializer
-
-    def get_queryset(self):
-        return Account.objects.filter(user_type="student")
-
-
-class DeleteStudentView(generics.DestroyAPIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = StudentSerializer
-    queryset = Student.objects.all()
 
 
 class CreateSessionView(generics.CreateAPIView):
