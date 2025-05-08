@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from account.models import Account
 
 
 PROGRAMS = [
@@ -23,13 +24,6 @@ programType = [
 
 
 # Create your models here.
-class Student(models.Model):
-    lecturer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=100)
-    index_number = models.CharField(max_length=20)
-    program = models.CharField(max_length=27, choices=PROGRAMS)
-
-
 class Course(models.Model):
     lecturer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     course_code = models.CharField(max_length=10)
@@ -54,7 +48,7 @@ class Session(models.Model):
 
 class Attendance(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def get_student(self):
         return self.student.full_name
