@@ -48,10 +48,10 @@ class Session(models.Model):
 
 class Attendance(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    student = models.ForeignKey(Account, on_delete=models.CASCADE)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def get_student(self):
-        return self.student.full_name
+        return f"{self.student.first_name} {self.student.last_name}"
 
     def get_program(self):
         return self.session.program
