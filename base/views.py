@@ -35,6 +35,15 @@ class DeleteCourseView(generics.DestroyAPIView):
     queryset = Course.objects.all()
 
 
+class RetrieveStudentView(generics.ListAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = StudentAccountSerializer
+
+    def get_queryset(self):
+        return Account.objects.filter(user_type="student")
+
+
 class CreateSessionView(generics.CreateAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]

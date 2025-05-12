@@ -5,6 +5,7 @@ urlpatterns = [
     path("course", views.CreateCourseView.as_view()),
     path("list_course", views.RetrieveCourse.as_view()),
     path("delete_course/<int:pk>", views.DeleteCourseView.as_view()),
+    path("list_student", views.RetrieveStudentView.as_view()),
     path("session", views.CreateSessionView.as_view()),
     path("list_session", views.RetrieveSessionView.as_view()),
     path("update_session/<int:pk>", views.UpdateSessionView.as_view()),
