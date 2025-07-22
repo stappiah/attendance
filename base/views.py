@@ -4,10 +4,10 @@ from base.serializers import (
     CourseSerializer,
     SessionSerializer,
     AttendanceSerializer,
+    StudentSerializer,
 )
-from base.models import Course, Session, Attendance
+from base.models import Course, Session, Attendance, Student
 from account.models import Account
-from account.serializers import StudentAccountSerializer
 
 
 # Create your views here.
@@ -35,13 +35,27 @@ class DeleteCourseView(generics.DestroyAPIView):
     queryset = Course.objects.all()
 
 
+class CreateStudentView(generics.CreateAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
+
+
 class RetrieveStudentView(generics.ListAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = StudentAccountSerializer
+    serializer_class = StudentSerializer
 
     def get_queryset(self):
-        return Account.objects.filter(user_type="student")
+        return Student.objects.all()
+
+
+class DeleteStudentView(generics.DestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
 
 
 class CreateSessionView(generics.CreateAPIView):
@@ -61,14 +75,14 @@ class RetrieveSessionView(generics.ListAPIView):
         return Session.objects.filter(lecturer=lecturer)
 
 
-class RetrieveStudentSessionView(generics.ListAPIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = SessionSerializer
+# class RetrieveStudentSessionView(generics.ListAPIView):
+#     authentication_classes = [authentication.TokenAuthentication]
+#     permission_classes = [permissions.IsAuthenticated]
+#     serializer_class = SessionSerializer
 
-    def get_queryset(self):
-        program = self.request.user.program
-        return Session.objects.filter(program=program, status=True)
+#     def get_queryset(self):
+#         program = self.request.user.program
+#         return Session.objects.filter(program=program, status=True)
 
 
 class UpdateSessionView(generics.UpdateAPIView):

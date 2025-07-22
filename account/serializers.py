@@ -13,9 +13,9 @@ class AccountSerializer(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
-            "user_type",
-            "program",
-            "index_number",
+            # "user_type",
+            # "program",
+            # "index_number",
             "password",
             "password2",
         )
@@ -35,9 +35,9 @@ class AccountSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
-            user_type=validated_data["user_type"],
-            program=validated_data["program"],
-            index_number=validated_data["index_number"],
+            # user_type=validated_data["user_type"],
+            # program=validated_data["program"],
+            # index_number=validated_data["index_number"],
         )
 
         user.set_password(password)
@@ -51,15 +51,15 @@ class AccountSerializer(serializers.ModelSerializer):
         return token.key
 
 
-class StudentAccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Account
-        fields = (
-            "id",
-            "email",
-            "first_name",
-            "last_name",
-            "user_type",
-            "program",
-            "index_number",
-        )
+# class StudentAccountSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Account
+#         fields = (
+#             "id",
+#             "email",
+#             "first_name",
+#             "last_name",
+#             # "user_type",
+#             "program",
+#             "index_number",
+#         )

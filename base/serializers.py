@@ -1,6 +1,16 @@
 from rest_framework import serializers
-from base.models import Course, Session, Attendance
+from base.models import Course, Session, Attendance, Student
 from account.models import Account
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    lecturer = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all(), default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = Student
+        fields = "__all__"
 
 
 class CourseSerializer(serializers.ModelSerializer):

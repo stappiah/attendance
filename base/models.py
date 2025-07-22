@@ -30,14 +30,25 @@ class Course(models.Model):
     course_name = models.CharField(max_length=100)
 
 
+class Student(models.Model):
+    lecturer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=100)
+    index_number = models.CharField(max_length=20)
+    program = models.CharField(max_length=27, choices=PROGRAMS)
+    level = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.program}"
+
+
 class Session(models.Model):
     lecturer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     program = models.CharField(max_length=27, choices=PROGRAMS)
-    created = models.DateField(auto_now_add=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     level = models.CharField(max_length=10)
     program_type = models.CharField(max_length=30, choices=programType)
     status = models.BooleanField(default=True)
+    created = models.DateField(auto_now_add=True)
 
     def session_course(self):
         return self.course.course_name
@@ -48,10 +59,10 @@ class Session(models.Model):
 
 class Attendance(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     def get_student(self):
-        return f"{self.student.first_name} {self.student.last_name}"
+        return f"{self.student.full_name}"
 
     def get_program(self):
         return self.session.program
