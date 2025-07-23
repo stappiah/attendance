@@ -48,7 +48,8 @@ class RetrieveStudentView(generics.ListAPIView):
     serializer_class = StudentSerializer
 
     def get_queryset(self):
-        return Student.objects.all()
+        lecturer = self.request.user
+        return Student.objects.filter(lecturer=lecturer)
 
 
 class DeleteStudentView(generics.DestroyAPIView):
